@@ -28,12 +28,14 @@ composeApp/src/
 - **MVVM pattern**: UI (Composables) → ViewModel → Repository/Data Layer
 - **Unidirectional data flow**: UI observes State, emits Events
 - **State management**: Use `remember` for local state, `ViewModel` for screen-level state
+- **State management**: Screen-level state should use sealed class for state management
 
 ## Compose Guidelines
 - Prefer `@Composable` functions over classes
 - Use `Material3` components (`Card`, `Button`, `TextField`)
 - Separate UI state from business logic
 - Keep composables small and focused
+- Use Navigation3 Library for navigation between screen 
 
 ## Theme & Design
 - **Dark Mode Only** - Netflix Hawkins design system

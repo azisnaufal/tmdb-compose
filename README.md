@@ -48,3 +48,12 @@ Alternatively, you can use the Gradle task if configured, but Xcode is the prima
 - **Resources:** Use `compose-components-resources` for shared images, fonts, and strings, located in `composeApp/src/commonMain/composeResources`.
 - **Dependency Management:** All dependencies are managed in `gradle/libs.versions.toml`.
 
+## Development Phase
+
+### Phase 1
+For detail of this phase please read `./development-phase/PHASE-1.md`
+- [ ] Splash Screen
+- [ ] Login Screen 
+- [ ] Main Screen (List genre and their trending movies) 
+- [ ] Search movies and genre
+- [ ] Pagination 
