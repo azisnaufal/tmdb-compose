@@ -35,7 +35,7 @@ composeApp/src/
 - Use `Material3` components (`Card`, `Button`, `TextField`)
 - Separate UI state from business logic
 - Keep composables small and focused
-- Use Navigation3 Library for navigation between screen 
+- Use Navigation Compose Library from jetbrains androidx for navigation between screen 
 
 ## Theme & Design
 - **Dark Mode Only** - Netflix Hawkins design system
