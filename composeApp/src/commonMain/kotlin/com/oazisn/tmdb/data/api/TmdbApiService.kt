@@ -9,12 +9,12 @@ import io.ktor.client.request.parameter
 
 class TmdbApiService(private val client: HttpClient = TmdbApiClient.create()) {
 
-    suspend fun getGenres(): GenreResponse = client.get("/genre/movie/list") {
+    suspend fun getGenres(): GenreResponse = client.get("genre/movie/list") {
         parameter("language", "en")
     }.body()
 
     suspend fun getMoviesByGenre(genreId: Int, page: Int = 1): MovieResponse =
-        client.get("/discover/movie") {
+        client.get("discover/movie") {
             parameter("include_adult", "false")
             parameter("include_video", "false")
             parameter("language", "en-US")

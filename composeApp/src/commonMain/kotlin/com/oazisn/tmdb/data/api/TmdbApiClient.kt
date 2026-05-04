@@ -8,7 +8,7 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
-import io.ktor.http.encodedPath
+import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -25,7 +25,7 @@ object TmdbApiClient {
             url {
                 protocol = URLProtocol.HTTPS
                 host = "api.themoviedb.org"
-                encodedPath = "/3$encodedPath"
+                path("3/")
             }
             header("Authorization", "Bearer ${getTmdbApiKey()}")
             header("accept", "application/json")
