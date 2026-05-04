@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -57,6 +58,12 @@ kotlin {
     }
 }
 
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 android {
     namespace = "com.oazisn.tmdb"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -68,7 +75,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "TMDB_API_KEY", "\"${project.findProperty("tmdb.api.key") ?: ""}\"")
+        buildConfigField("String", "TMDB_API_KEY", "\"${localProperties["tmdb.api.key"]}\"")
     }
     buildFeatures {
         buildConfig = true
