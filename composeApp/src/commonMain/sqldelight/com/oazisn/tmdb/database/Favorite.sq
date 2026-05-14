@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS favorite (
+    id INTEGER NOT NULL PRIMARY KEY,
+    genre TEXT NOT NULL,
+    title TEXT NOT NULL,
+    poster_path TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM favorite;
+
+selectById:
+SELECT * FROM favorite WHERE id = ?;
+
+insert:
+INSERT OR REPLACE INTO favorite(id, genre, title, poster_path)
+VALUES (?, ?, ?, ?);
+
+delete:
+DELETE FROM favorite WHERE id = ?;

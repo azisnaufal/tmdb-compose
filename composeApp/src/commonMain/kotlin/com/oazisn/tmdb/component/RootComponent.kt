@@ -10,6 +10,8 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.oazisn.tmdb.data.model.Movie
+import com.oazisn.tmdb.data.repository.FavoriteRepository
+import com.oazisn.tmdb.database.TmdbDatabase
 import kotlinx.serialization.Serializable
 
 interface RootComponent {
@@ -25,8 +27,11 @@ interface RootComponent {
 
 @OptIn(DelicateDecomposeApi::class)
 class DefaultRootComponent(
-    componentContext: ComponentContext
+    componentContext: ComponentContext,
+    database: TmdbDatabase
 ) : RootComponent, ComponentContext by componentContext {
+
+    private val favoriteRepository = FavoriteRepository(database)
 
     private val navigation = StackNavigation<Config>()
 
@@ -56,13 +61,14 @@ class DefaultRootComponent(
             is Config.Main -> RootComponent.Child.Main(
                 DefaultMainComponent(
                     componentContext = componentContext,
-                    onMovieClick = { movie: Movie -> navigation.push(Config.Detail(movie)) }
+                    onMovieClick = { movie: Movie -> navigation.push(Config.Detail(movie.id)) }
                 )
             )
             is Config.Detail -> RootComponent.Child.Detail(
                 DefaultDetailComponent(
                     componentContext = componentContext,
-                    movie = config.movie,
+                    movieId = config.movieId,
+                    favoriteRepository = favoriteRepository,
                     onBack = { navigation.pop() }
                 )
             )
@@ -73,6 +79,6 @@ class DefaultRootComponent(
         @Serializable data object Splash : Config()
         @Serializable data object Login : Config()
         @Serializable data object Main : Config()
-        @Serializable data class Detail(val movie: Movie) : Config()
+        @Serializable data class Detail(val movieId: Int) : Config()
     }
 }

@@ -2,6 +2,7 @@ package com.oazisn.tmdb.data.repository
 
 import com.oazisn.tmdb.data.api.TmdbApiService
 import com.oazisn.tmdb.data.model.GenreWithMovies
+import com.oazisn.tmdb.data.model.MovieDetail
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.util.network.UnresolvedAddressException
@@ -21,6 +22,19 @@ class MovieRepository(
         Result.success(genresWithMovies)
     } catch (e: ClientRequestException) {
         Result.failure(UserFriendlyException("Unable to load content. Please try again."))
+    } catch (e: ServerResponseException) {
+        Result.failure(UserFriendlyException("Something went wrong on our end. Please try again later."))
+    } catch (e: UnresolvedAddressException) {
+        Result.failure(UserFriendlyException("Unable to connect. Please check your internet connection."))
+    } catch (e: Exception) {
+        Result.failure(UserFriendlyException("An unexpected error occurred. Please try again."))
+    }
+
+    suspend fun getMovieDetail(movieId: Int): Result<MovieDetail> = try {
+        val detail = apiService.getMovieDetail(movieId)
+        Result.success(detail)
+    } catch (e: ClientRequestException) {
+        Result.failure(UserFriendlyException("Unable to load movie details. Please try again."))
     } catch (e: ServerResponseException) {
         Result.failure(UserFriendlyException("Something went wrong on our end. Please try again later."))
     } catch (e: UnresolvedAddressException) {

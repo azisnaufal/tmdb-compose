@@ -1,6 +1,7 @@
 package com.oazisn.tmdb.data.api
 
 import com.oazisn.tmdb.data.model.GenreResponse
+import com.oazisn.tmdb.data.model.MovieDetail
 import com.oazisn.tmdb.data.model.MovieResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -21,5 +22,10 @@ class TmdbApiService(private val client: HttpClient = TmdbApiClient.create()) {
             parameter("page", page)
             parameter("sort_by", "popularity.desc")
             parameter("with_genres", genreId.toString())
+        }.body()
+
+    suspend fun getMovieDetail(movieId: Int): MovieDetail =
+        client.get("movie/$movieId") {
+            parameter("language", "en-US")
         }.body()
 }

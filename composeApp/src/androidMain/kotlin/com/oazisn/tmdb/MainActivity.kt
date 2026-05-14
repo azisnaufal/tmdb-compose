@@ -13,6 +13,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        appContext = applicationContext
 
         setContent {
             App(DefaultComponentContext(lifecycle = LifecycleRegistry()))

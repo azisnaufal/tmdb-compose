@@ -6,9 +6,9 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.oazisn.tmdb.component.DefaultRootComponent
 import com.oazisn.tmdb.component.RootComponent
+import com.oazisn.tmdb.database.TmdbDatabase
 import com.oazisn.tmdb.screen.detail.DetailScreen
 import com.oazisn.tmdb.screen.login.LoginScreen
 import com.oazisn.tmdb.screen.main.MainScreen
@@ -18,8 +18,9 @@ import com.oazisn.tmdb.theme.NetflixTheme
 @Composable
 fun App(componentContext: ComponentContext) {
     NetflixTheme {
+        val database = remember { TmdbDatabase(createDatabaseDriver()) }
         val rootComponent = remember(componentContext) {
-            DefaultRootComponent(componentContext = componentContext)
+            DefaultRootComponent(componentContext = componentContext, database = database)
         }
 
         Children(
