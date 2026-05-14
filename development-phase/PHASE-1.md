@@ -20,7 +20,7 @@ When login button is clicked, it will validate the username and password. If the
 
 When system access this screen. Show loading at the top with red primary netflix color. 
 This loading should show whenever fetching data is still in progress.
-This viewModel code should fetch all genres using this endpoint:
+This MainComponent code should fetch all genres using this endpoint:
 
 > curl --request GET \
 > --url 'https://api.themoviedb.org/3/genre/movie/list?language=en' \
@@ -39,10 +39,9 @@ After fetching the popular movies, then render the image of `poster_path` using 
 The base url of image to show the `poster_path` is `https://image.tmdb.org/t/p/w300{poster_path}`.
 Usually the `poster_path` already contains the slash at initial of string. So we just replace the {poster_path} to the base url.
 
-
-
 ### Search movies and genre
-TBA
-
-### Pagination
-TBA
+At MainScreen, add material3 action bar button. The background color should be same with the MainScreen background color. 
+The height should use the general action bar height. Usually in android we can access it using `android.R.attr.actionBarSize` but since we are in compose multiplatform we should have support for each platform.
+Add search button at the right of the action bar button. When the button is clicked the action bar should transform into search text field so user can click it then type the genre or movie title they desired.
+The logic of search is just by filtering the genre and/or the movie title. 
+No enter button at the end of search is required. So the search should react as fast as it can to filter the movies and genre. 
