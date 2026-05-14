@@ -35,13 +35,14 @@ composeApp/src/
 - Use `Material3` components (`Card`, `Button`, `TextField`)
 - Separate UI state from business logic
 - Keep composables small and focused
-- Use Navigation Compose Library from jetbrains androidx for navigation between screen 
+- Use Decompose Library from https://github.com/arkivanov/Decompose for navigation between screen
 
 ## Theme & Design
 - **Dark Mode Only** - Netflix Hawkins design system
 - Wrap root composable with `NetflixTheme` from `theme/NetflixTheme.kt`
 - Use theme colors via `MaterialTheme.colorScheme`
 - See `DESIGN.md` for complete design specifications (colors, typography, components)
+- The app should put action button positioned on screen safe area. But the content should use all screen real estate.
 
 ## Platform-Specific Code
 - Use `expect/actual` declarations for platform APIs

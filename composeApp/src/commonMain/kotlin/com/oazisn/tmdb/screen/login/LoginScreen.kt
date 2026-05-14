@@ -17,17 +17,20 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.oazisn.tmdb.component.LoginComponent
 import com.oazisn.tmdb.theme.NetflixColors
 import com.oazisn.tmdb.theme.NetflixSpacing
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel,
-    onLoginSuccess: () -> Unit
-) {
+fun LoginScreen(component: LoginComponent) {
+    val state by component.state.subscribeAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,8 +49,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(NetflixSpacing.LG))
 
         OutlinedTextField(
-            value = viewModel.username,
-            onValueChange = { viewModel.onUsernameChanged(it) },
+            value = state.username,
+            onValueChange = { component.onUsernameChanged(it) },
             label = { Text("Username") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -65,8 +68,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(NetflixSpacing.Base))
 
         OutlinedTextField(
-            value = viewModel.password,
-            onValueChange = { viewModel.onPasswordChanged(it) },
+            value = state.password,
+            onValueChange = { component.onPasswordChanged(it) },
             label = { Text("Password") },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
@@ -84,9 +87,9 @@ fun LoginScreen(
 
         Spacer(modifier = Modifier.height(NetflixSpacing.Base))
 
-        if (viewModel.viewState is LoginViewState.Error) {
+        if (state.viewState is LoginViewState.Error) {
             Text(
-                text = (viewModel.viewState as LoginViewState.Error).message,
+                text = (state.viewState as LoginViewState.Error).message,
                 color = NetflixColors.RedPrimary,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -94,18 +97,18 @@ fun LoginScreen(
         }
 
         Button(
-            onClick = { viewModel.login(onLoginSuccess) },
+            onClick = { component.login() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(NetflixSpacing.XXL),
-            enabled = viewModel.viewState !is LoginViewState.Loading,
+            enabled = state.viewState !is LoginViewState.Loading,
             colors = ButtonDefaults.buttonColors(
                 containerColor = NetflixColors.RedPrimary,
                 contentColor = NetflixColors.WhitePrimary,
                 disabledContainerColor = NetflixColors.RedPrimary.copy(alpha = 0.5f)
             )
         ) {
-            if (viewModel.viewState is LoginViewState.Loading) {
+            if (state.viewState is LoginViewState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(NetflixSpacing.Base + NetflixSpacing.XXS),
                     color = NetflixColors.WhitePrimary,

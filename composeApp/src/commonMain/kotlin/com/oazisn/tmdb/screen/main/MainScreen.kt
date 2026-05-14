@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.oazisn.tmdb.data.model.Movie
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import com.oazisn.tmdb.component.MainComponent
+import com.oazisn.tmdb.component.MainViewState
 import com.oazisn.tmdb.screen.components.ErrorState
 import com.oazisn.tmdb.screen.components.GenreSection
 import com.oazisn.tmdb.screen.components.LoadingIndicator
@@ -17,11 +19,10 @@ import com.oazisn.tmdb.theme.NetflixColors
 import com.oazisn.tmdb.theme.NetflixSpacing
 
 @Composable
-fun MainScreen(
-    onMovieClick: (Movie) -> Unit,
-    viewModel: MainViewModel = viewModel { MainViewModel() }
-) {
-    when (val state = viewModel.viewState) {
+fun MainScreen(component: MainComponent) {
+    val state by component.state.subscribeAsState()
+
+    when (val s = state) {
         is MainViewState.Loading -> {
             LoadingIndicator(
                 modifier = Modifier.fillMaxSize().background(NetflixColors.BlackCanvas)
@@ -33,10 +34,10 @@ fun MainScreen(
                     .fillMaxSize()
                     .background(NetflixColors.BlackCanvas)
             ) {
-                items(state.data, key = { it.genre.id }) { genreWithMovies ->
+                items(s.data, key = { it.genre.id }) { genreWithMovies ->
                     GenreSection(
                         genreWithMovies = genreWithMovies,
-                        onMovieClick = onMovieClick
+                        onMovieClick = { component.onMovieClick(it) }
                     )
                     Spacer(modifier = Modifier.height(NetflixSpacing.XL))
                 }
@@ -44,8 +45,8 @@ fun MainScreen(
         }
         is MainViewState.Error -> {
             ErrorState(
-                message = state.message,
-                onRetry = { viewModel.loadData() },
+                message = s.message,
+                onRetry = { component.retry() },
                 modifier = Modifier.fillMaxSize()
             )
         }
